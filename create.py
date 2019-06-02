@@ -2,14 +2,18 @@ import sys
 import os
 from github import Github
 
-path = "~/Documents/Projects/"
+USER = os.environ.get('USER')
+path = "/home/"+ USER + "/Documents/Projects/"
+dirname = os.path.dirname(__file__)
 
-with open('myfile.txt') as f:
-    token = f
+with open(dirname + '/access_token.creds') as f:
+    token = f.readline().strip()
+    
 
 def create():
-    folderName = str(sys.argv[1])
-    os.makedirs(path + str(sys.argv[1]))
+    folderName = path + str(sys.argv[1])
+    print("Creating folder{}".format(folderName))
+    os.makedirs(folderName)
     user = Github(token).get_user()
     repo = user.create_repo(sys.argv[1], private=True)
     print("Succesfully created private repository {}".format(sys.argv[1]))
